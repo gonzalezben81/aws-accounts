@@ -39,7 +39,7 @@ jobs:
           
           # Write headers to the markdown file
           # Write headers to the markdown file
-          echo "# <img src='https://upload.wikimedia.org/wikipedia/commons/a/a7/Amazon_Web_Services_Logo.svg' width='30' height='30'> AWS Accounts" > $markdown_file
+          echo "# <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg' width='30' height='30'> AWS Accounts" > $markdown_file
           echo "Here is the list of AWS accounts in the organization:" >> $markdown_file
           echo "" >> $markdown_file
           echo "| Account Name       | Account ID      |" >> $markdown_file
