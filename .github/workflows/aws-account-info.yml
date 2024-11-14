@@ -28,7 +28,7 @@ jobs:
         id: aws_accounts
         run: |
           # Retrieve and encode the accounts list as a single line
-          accounts=$(aws organizations list-accounts --query "Accounts[*].{ID:Id,Name:Name}" --output json | base64)
+          accounts=$(aws organizations list-accounts --query "Accounts[*].{ID:Id,Name:Name}" --output table
           echo "Retrieved accounts: $accounts"
           
           # Check if the accounts variable is empty
@@ -39,21 +39,21 @@ jobs:
   
           # Write the Base64 encoded accounts list to the environment file
           echo "accounts=$accounts" >> $GITHUB_ENV
-
-      - name: Update Markdown Document
-        run: |
-          markdown_file="accounts.md"
-          
-          # Decode the accounts JSON from Base64
-          accounts=$(echo "${{ env.accounts }}" | base64 --decode)
-          
-          echo "# AWS Accounts" > $markdown_file
-          echo "Here is the list of AWS accounts in the organization:" >> $markdown_file
-          echo "" >> $markdown_file
-          
-          # Append each account to the markdown file
-          echo "$accounts" | jq -r '.[] | "* \(.Name) (\(.ID))"' >> $markdown_file
-          
+# 
+#       - name: Update Markdown Document
+#         run: |
+#           markdown_file="accounts.md"
+#           
+#           # Decode the accounts JSON from Base64
+#           accounts=$(echo "${{ env.accounts }}" | base64 --decode)
+#           
+#           echo "# AWS Accounts" > $markdown_file
+#           echo "Here is the list of AWS accounts in the organization:" >> $markdown_file
+#           echo "" >> $markdown_file
+#           
+#           # Append each account to the markdown file
+#           echo "$accounts" | jq -r '.[] | "* \(.Name) (\(.ID))"' >> $markdown_file
+#           
       - name: Debug - List Files After Generation
         run: |
           echo "Listing Root folder"
