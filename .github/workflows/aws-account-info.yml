@@ -30,22 +30,35 @@ jobs:
           accounts=$(aws organizations list-accounts --query "Accounts[*].{ID:Id,Name:Name}" --output json)
           echo "AWS Accounts: $accounts"
           echo "::set-output name=accounts::$accounts"
+          
+      
 
+      - name: Retrieve AWS Account List
+        id: aws_accounts
+        run: |
+          accounts=$(aws organizations list-accounts --query "Accounts[*].{ID:Id,Name:Name}" --output json)
+          echo "Retrieved accounts: $accounts"
+          if [[ -z "$accounts" || "$accounts" == "[]" ]]; then
+            echo "No accounts found or command failed."
+            exit 1
+          fi
+          # Set the output using the new environment file method
+          echo "accounts=$accounts" >> $GITHUB_ENV
+          
       - name: Update Markdown Document
         run: |
-          # Define the path of your markdown file
           markdown_file="accounts.md"
-
-          # Retrieve current accounts from the output of the previous step
-          accounts="${{ steps.aws_accounts.outputs.accounts }}"
-
-          # Format the AWS accounts list into markdown
+          accounts="${{ env.accounts }}"
+          
           echo "# AWS Accounts" > $markdown_file
           echo "Here is the list of AWS accounts in the organization:" >> $markdown_file
           echo "" >> $markdown_file
           
-          # Append each account to the markdown file
-          echo "$accounts" | jq -r '.[] | "* \(.Name) (\(.ID))"' >> $markdown_file
+          if [[ -z "$accounts" || "$accounts" == "[]" ]]; then
+            echo "No accounts available to add to the markdown file." >> $markdown_file
+          else
+            echo "$accounts" | jq -r '.[] | "* \(.Name) (\(.ID))"' >> $markdown_file
+          fi          
           
       - name: Debug - List Files After Generation
         run: |
