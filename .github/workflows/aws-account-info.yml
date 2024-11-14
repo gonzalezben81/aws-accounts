@@ -28,15 +28,6 @@ jobs:
         id: aws_accounts
         run: |
           accounts=$(aws organizations list-accounts --query "Accounts[*].{ID:Id,Name:Name}" --output json)
-          echo "AWS Accounts: $accounts"
-          echo "::set-output name=accounts::$accounts"
-          
-      
-
-      - name: Retrieve AWS Account List
-        id: aws_accounts
-        run: |
-          accounts=$(aws organizations list-accounts --query "Accounts[*].{ID:Id,Name:Name}" --output json)
           echo "Retrieved accounts: $accounts"
           if [[ -z "$accounts" || "$accounts" == "[]" ]]; then
             echo "No accounts found or command failed."
