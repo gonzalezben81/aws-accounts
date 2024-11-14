@@ -39,6 +39,7 @@ jobs:
           
           # Write headers to the markdown file
           # Write headers to the markdown file
+          echo "# ![AWS Logo](https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg) AWS Accounts" > $markdown_file
           echo "# <i class='fa fa-aws'></i> AWS Accounts" > $markdown_file
           echo "Here is the list of AWS accounts in the organization:" >> $markdown_file
           echo "" >> $markdown_file
