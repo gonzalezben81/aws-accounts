@@ -47,21 +47,7 @@ jobs:
           
           # Format the AWS accounts into a Markdown table
           echo "$accounts" | awk '{printf "| %-18s | %-15s |\n", $2, $1}' >> $markdown_file
-# 
-#       - name: Update Markdown Document
-#         run: |
-#           markdown_file="accounts.md"
-#           
-#           # Decode the accounts JSON from Base64
-#           accounts=$(echo "${{ env.accounts }}" | base64 --decode)
-#           
-#           echo "# AWS Accounts" > $markdown_file
-#           echo "Here is the list of AWS accounts in the organization:" >> $markdown_file
-#           echo "" >> $markdown_file
-#           
-#           # Append each account to the markdown file
-#           echo "$accounts" | jq -r '.[] | "* \(.Name) (\(.ID))"' >> $markdown_file
-#           
+
       - name: Debug - List Files After Generation
         run: |
           echo "Listing Root folder"
