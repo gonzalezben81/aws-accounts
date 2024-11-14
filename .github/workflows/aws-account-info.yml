@@ -5,6 +5,9 @@ on:
     branches:
       - main
   workflow_dispatch:
+  
+permissions:
+  contents: 'write'  
 
 jobs:
   update-aws-accounts:
@@ -14,7 +17,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set up AWS CLI
+      - name: Login to AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::098789448788:role/rgonzo-aws-accounts-github-Role-RkgjO4uXfipb
