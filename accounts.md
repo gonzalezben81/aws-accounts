@@ -1,4 +1,4 @@
-# <i class='fa fa-aws'></i> AWS Accounts
+# ![AWS Logo](https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg) AWS Accounts
 Here is the list of AWS accounts in the organization:
 
 | Account Name       | Account ID      |
