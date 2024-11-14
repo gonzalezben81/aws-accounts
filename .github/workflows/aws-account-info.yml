@@ -1,0 +1,62 @@
+name: Update AWS Accounts in Markdown
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  update-aws-accounts:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::098789448788:role/rgonzo-aws-accounts-github-Role-RkgjO4uXfipb
+          aws-region: us-east-1  # Adjust region as needed
+
+      - name: Retrieve AWS Account List
+        id: aws_accounts
+        run: |
+          accounts=$(aws organizations list-accounts --query "Accounts[*].{ID:Id,Name:Name}" --output json)
+          echo "AWS Accounts: $accounts"
+          echo "::set-output name=accounts::$accounts"
+
+      - name: Update Markdown Document
+        run: |
+          # Define the path of your markdown file
+          markdown_file="accounts.md"
+
+          # Retrieve current accounts from the output of the previous step
+          accounts="${{ steps.aws_accounts.outputs.accounts }}"
+
+          # Format the AWS accounts list into markdown
+          echo "# AWS Accounts" > $markdown_file
+          echo "Here is the list of AWS accounts in the organization:" >> $markdown_file
+          echo "" >> $markdown_file
+          
+          # Append each account to the markdown file
+          echo "$accounts" | jq -r '.[] | "* \(.Name) (\(.ID))"' >> $markdown_file
+          
+      - name: Debug - List Files After Generation
+        run: |
+          echo "Listing Root folder"
+          ls -la          
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+  
+      - name: Commit Changes
+        run: |
+          git add accounts.md
+          git commit -m "List of AWS Accounts"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
