@@ -28,7 +28,7 @@ jobs:
         id: aws_accounts
         run: |
           # Retrieve and encode the accounts list as a single line
-          accounts=$(aws organizations list-accounts --query "Accounts[*].{ID:Id,Name:Name}" --output table
+          accounts=$(aws organizations list-accounts --query "Accounts[*].{ID:Id,Name:Name}" --output table)
           echo "Retrieved accounts: $accounts"
           
           # Check if the accounts variable is empty
