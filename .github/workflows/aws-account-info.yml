@@ -24,20 +24,20 @@ jobs:
           role-to-assume: arn:aws:iam::098789448788:role/rgonzo-aws-accounts-github-Role-RkgjO4uXfipb
           aws-region: us-east-1  # Adjust region as needed
 
-      - name: Retrieve AWS Account List
+      - name: Retrieve AWS Account List in Table Format
         id: aws_accounts
         run: |
-          # Retrieve and encode the accounts list as a single line
-          accounts=$(aws organizations list-accounts --query "Accounts[*].{ID:Id,Name:Name}" --output table)
+          # Retrieve and format the accounts list as plain text
+          accounts=$(aws organizations list-accounts --query "Accounts[*].{ID:Id,Name:Name}" --output text)
           echo "Retrieved accounts: $accounts"
           
-          # Check if the accounts variable is empty
-          if [[ -z "$accounts" || "$accounts" == "[]" ]]; then
+          # Check if accounts is empty
+          if [[ -z "$accounts" ]]; then
             echo "No accounts found or command failed."
             exit 1
           fi
-  
-          # Write the Base64 encoded accounts list to the environment file
+          
+          # Save the accounts list to the environment file
           echo "accounts=$accounts" >> $GITHUB_ENV
 # 
 #       - name: Update Markdown Document
