@@ -1,58 +1,58 @@
 # <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg' width='30' height='30'> AWS Accounts
-Here is the list of AWS accounts in the organization, grouped by organization:
+Here is the list of AWS accounts in the organization, grouped by Organizational Unit (OU):
 
-## 098789448788
+## Organizational Unit: 098789448788
 
 | Account Name       | Account ID      |
 |--------------------|-----------------|
 | Gonzalez           | Ben             |
 
-## 985539799804
+## Organizational Unit: 985539799804
 
 | Account Name       | Account ID      |
 |--------------------|-----------------|
-| arn:aws:organizations::098789448788:account/o-5c0eu74as7/985539799804 | gonzodatalake   |
+| None               | gonzodatalake   |
 
-## 841162665398
-
-| Account Name       | Account ID      |
-|--------------------|-----------------|
-| arn:aws:organizations::098789448788:account/o-5c0eu74as7/841162665398 | slu-data-lake   |
-
-## 529088281001
+## Organizational Unit: 841162665398
 
 | Account Name       | Account ID      |
 |--------------------|-----------------|
-| arn:aws:organizations::098789448788:account/o-5c0eu74as7/529088281001 | gonzoprogramming |
+| None               | slu-data-lake   |
 
-## 692859932239
-
-| Account Name       | Account ID      |
-|--------------------|-----------------|
-| arn:aws:organizations::098789448788:account/o-5c0eu74as7/692859932239 | gonzodatascience |
-
-## 442426862308
+## Organizational Unit: 529088281001
 
 | Account Name       | Account ID      |
 |--------------------|-----------------|
-| arn:aws:organizations::098789448788:account/o-5c0eu74as7/442426862308 | slu-data-science |
+| None               | gonzoprogramming |
 
-## 509399635729
-
-| Account Name       | Account ID      |
-|--------------------|-----------------|
-| arn:aws:organizations::098789448788:account/o-5c0eu74as7/509399635729 | slu-programming |
-
-## 761018881748
+## Organizational Unit: 692859932239
 
 | Account Name       | Account ID      |
 |--------------------|-----------------|
-| arn:aws:organizations::098789448788:account/o-5c0eu74as7/761018881748 | slu-applied-analytics |
+| None               | gonzodatascience |
 
-## 637423577632
+## Organizational Unit: 442426862308
 
 | Account Name       | Account ID      |
 |--------------------|-----------------|
-| arn:aws:organizations::098789448788:account/o-5c0eu74as7/637423577632 | gonzoanalytics  |
+| None               | slu-data-science |
 
-*Report generated on Thu Nov 21 00:54:47 UTC 2024*
+## Organizational Unit: 509399635729
+
+| Account Name       | Account ID      |
+|--------------------|-----------------|
+| None               | slu-programming |
+
+## Organizational Unit: 761018881748
+
+| Account Name       | Account ID      |
+|--------------------|-----------------|
+| None               | slu-applied-analytics |
+
+## Organizational Unit: 637423577632
+
+| Account Name       | Account ID      |
+|--------------------|-----------------|
+| None               | gonzoanalytics  |
+
+*Report generated on Thu Nov 21 00:58:20 UTC 2024*
