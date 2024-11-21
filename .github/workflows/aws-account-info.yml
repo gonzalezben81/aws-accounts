@@ -48,6 +48,10 @@ jobs:
           # Format the AWS accounts into a Markdown table
           echo "$accounts" | awk '{printf "| %-18s | %-15s |\n", $2, $1}' >> $markdown_file
 
+          # Add a date-time stamp at the bottom of the markdown file
+          echo "" >> $markdown_file
+          echo "*Report generated on $(date)*" >> $markdown_file
+
       - name: Debug - List Files After Generation
         run: |
           echo "Listing Root folder"
