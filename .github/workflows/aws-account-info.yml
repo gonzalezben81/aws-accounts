@@ -28,8 +28,17 @@ jobs:
         run: |
           markdown_file="accounts.md"
 
+          # Retrieve the root ID of the AWS Organization
+          root_id=$(aws organizations list-roots --query "Roots[0].Id" --output text)
+          
+          # Check if the root ID was retrieved successfully
+          if [[ -z "$root_id" ]]; then
+            echo "Failed to retrieve the root ID. Ensure you have the necessary permissions."
+            exit 1
+          fi
+
           # Retrieve a list of organizational units (OUs) under the root
-          org_units=$(aws organizations list-organizational-units-for-parent --parent-id <root-id> --query "OrganizationalUnits[*].{Id:Id,Name:Name}" --output json)
+          org_units=$(aws organizations list-organizational-units-for-parent --parent-id "$root_id" --query "OrganizationalUnits[*].{Id:Id,Name:Name}" --output json)
           
           # Check if organizational units were retrieved
           if [[ -z "$org_units" ]]; then
@@ -70,6 +79,7 @@ jobs:
           
           # Add a timestamp at the bottom of the Markdown file
           echo "*Report generated on $(date)*" >> $markdown_file
+
 
 
 
