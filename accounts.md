@@ -1,58 +1,23 @@
-# <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg' width='30' height='30'> AWS Accounts
-Here is the list of AWS accounts in the organization, grouped by Organizational Unit (OU):
+# <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg' width='30' height='30'> AWS Accounts Report
+This document lists all AWS accounts grouped by Organizational Units (OUs):
 
-## Organizational Unit: 098789448788
-
-| Account Name       | Account ID      |
-|--------------------|-----------------|
-| Gonzalez           | Ben             |
-
-## Organizational Unit: 985539799804
+## Organizational Unit: rgonzo
 
 | Account Name       | Account ID      |
 |--------------------|-----------------|
-| None               | gonzodatalake   |
+| gonzoanalytics     | 637423577632    |
+| Ben Gonzalez       | 098789448788    |
+| gonzoprogramming   | 529088281001    |
+| gonzodatalake      | 985539799804    |
+| gonzodatascience   | 692859932239    |
 
-## Organizational Unit: 841162665398
-
-| Account Name       | Account ID      |
-|--------------------|-----------------|
-| None               | slu-data-lake   |
-
-## Organizational Unit: 529088281001
+## Organizational Unit: SLU
 
 | Account Name       | Account ID      |
 |--------------------|-----------------|
-| None               | gonzoprogramming |
+| slu-programming    | 509399635729    |
+| slu-applied-analytics | 761018881748    |
+| slu-data-lake      | 841162665398    |
+| slu-data-science   | 442426862308    |
 
-## Organizational Unit: 692859932239
-
-| Account Name       | Account ID      |
-|--------------------|-----------------|
-| None               | gonzodatascience |
-
-## Organizational Unit: 442426862308
-
-| Account Name       | Account ID      |
-|--------------------|-----------------|
-| None               | slu-data-science |
-
-## Organizational Unit: 509399635729
-
-| Account Name       | Account ID      |
-|--------------------|-----------------|
-| None               | slu-programming |
-
-## Organizational Unit: 761018881748
-
-| Account Name       | Account ID      |
-|--------------------|-----------------|
-| None               | slu-applied-analytics |
-
-## Organizational Unit: 637423577632
-
-| Account Name       | Account ID      |
-|--------------------|-----------------|
-| None               | gonzoanalytics  |
-
-*Report generated on Thu Nov 21 00:58:20 UTC 2024*
+*Report generated on Thu Nov 21 01:05:33 UTC 2024*
