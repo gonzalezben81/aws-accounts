@@ -5,6 +5,9 @@ Here is the list of AWS accounts in the organization:
 |--------------------|-----------------|
 | Ben                | 098789448788    |
 | gonzodatalake      | 985539799804    |
+| slu-data-lake      | 841162665398    |
 | gonzoprogramming   | 529088281001    |
 | gonzodatascience   | 692859932239    |
+| slu-data-science   | 442426862308    |
+| slu-applied-analytics | 761018881748    |
 | gonzoanalytics     | 637423577632    |
