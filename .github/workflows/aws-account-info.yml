@@ -27,30 +27,45 @@ jobs:
       - name: Retrieve AWS Account List in Table Format
         run: |
           markdown_file="accounts.md"
-          
-          # Retrieve accounts list directly from AWS CLI in text format
-          accounts=$(aws organizations list-accounts --query "Accounts[*].{ID:Id,Name:Name}" --output text)
-          
+
+          # Retrieve accounts list directly from AWS CLI in text format, including the Organization field
+          accounts=$(aws organizations list-accounts --query "Accounts[*].{Org:Arn,ID:Id,Name:Name}" --output text)
+
           # Check if accounts were retrieved
           if [[ -z "$accounts" ]]; then
             echo "No accounts found or command failed."
             exit 1
           fi
-          
-          # Write headers to the markdown file
+
           # Write headers to the markdown file
           echo "# <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg' width='30' height='30'> AWS Accounts" > $markdown_file
-          echo "Here is the list of AWS accounts in the organization:" >> $markdown_file
+          echo "Here is the list of AWS accounts in the organization, grouped by organization:" >> $markdown_file
           echo "" >> $markdown_file
-          echo "| Account Name       | Account ID      |" >> $markdown_file
-          echo "|--------------------|-----------------|" >> $markdown_file
-          
-          # Format the AWS accounts into a Markdown table
-          echo "$accounts" | awk '{printf "| %-18s | %-15s |\n", $2, $1}' >> $markdown_file
+
+          # Group and write accounts by organization
+          echo "$accounts" | awk '
+          {
+            # Extract the organization name (assuming it can be parsed from the Arn)
+            split($1, orgParts, "/");
+            orgName = orgParts[length(orgParts)];
+            
+            # If a new organization is encountered, print a header
+            if (orgName != currentOrg) {
+              if (currentOrg != "") { print "" } # Add a blank line between organizations
+              currentOrg = orgName;
+              printf "## %s\n\n", currentOrg;
+              printf "| Account Name       | Account ID      |\n";
+              printf "|--------------------|-----------------|\n";
+            }
+  
+              # Print the account details
+              printf "| %-18s | %-15s |\n", $3, $2;
+            }' >> $markdown_file
 
           # Add a date-time stamp at the bottom of the markdown file
           echo "" >> $markdown_file
           echo "*Report generated on $(date)*" >> $markdown_file
+
 
       - name: Debug - List Files After Generation
         run: |
