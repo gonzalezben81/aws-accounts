@@ -12,3 +12,5 @@ Here is the list of AWS accounts in the organization:
 | slu-programming    | 509399635729    |
 | slu-applied-analytics | 761018881748    |
 | gonzoanalytics     | 637423577632    |
+
+*Report generated on Thu Nov 21 00:51:04 UTC 2024*
