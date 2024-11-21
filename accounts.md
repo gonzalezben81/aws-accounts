@@ -9,5 +9,6 @@ Here is the list of AWS accounts in the organization:
 | gonzoprogramming   | 529088281001    |
 | gonzodatascience   | 692859932239    |
 | slu-data-science   | 442426862308    |
+| slu-programming    | 509399635729    |
 | slu-applied-analytics | 761018881748    |
 | gonzoanalytics     | 637423577632    |
