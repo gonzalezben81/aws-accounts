@@ -28,8 +28,8 @@ jobs:
         run: |
           markdown_file="accounts.md"
 
-          # Retrieve accounts list directly from AWS CLI in text format, including the Organization field
-          accounts=$(aws organizations list-accounts --query "Accounts[*].{Org:Arn,ID:Id,Name:Name}" --output text)
+          # Retrieve accounts and their associated OU information
+          accounts=$(aws organizations list-accounts --query "Accounts[*].{OU:ParentId,ID:Id,Name:Name}" --output text)
 
           # Check if accounts were retrieved
           if [[ -z "$accounts" ]]; then
@@ -39,28 +39,27 @@ jobs:
 
           # Write headers to the markdown file
           echo "# <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg' width='30' height='30'> AWS Accounts" > $markdown_file
-          echo "Here is the list of AWS accounts in the organization, grouped by organization:" >> $markdown_file
+          echo "Here is the list of AWS accounts in the organization, grouped by Organizational Unit (OU):" >> $markdown_file
           echo "" >> $markdown_file
 
-          # Group and write accounts by organization
+          # Group and write accounts by Organizational Unit
           echo "$accounts" | awk '
           {
-            # Extract the organization name (assuming it can be parsed from the Arn)
-            split($1, orgParts, "/");
-            orgName = orgParts[length(orgParts)];
+            # Extract Organizational Unit (OU) name or ID
+            ouName = $1;
             
-            # If a new organization is encountered, print a header
-            if (orgName != currentOrg) {
-              if (currentOrg != "") { print "" } # Add a blank line between organizations
-              currentOrg = orgName;
-              printf "## %s\n\n", currentOrg;
+            # If a new OU is encountered, print a header
+            if (ouName != currentOU) {
+              if (currentOU != "") { print "" } # Add a blank line between OUs
+              currentOU = ouName;
+              printf "## Organizational Unit: %s\n\n", currentOU;
               printf "| Account Name       | Account ID      |\n";
               printf "|--------------------|-----------------|\n";
             }
-  
-              # Print the account details
-              printf "| %-18s | %-15s |\n", $3, $2;
-            }' >> $markdown_file
+            
+            # Print the account details
+            printf "| %-18s | %-15s |\n", $3, $2;
+          }' >> $markdown_file
 
           # Add a date-time stamp at the bottom of the markdown file
           echo "" >> $markdown_file
