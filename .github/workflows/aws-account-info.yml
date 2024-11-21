@@ -28,42 +28,49 @@ jobs:
         run: |
           markdown_file="accounts.md"
 
-          # Retrieve accounts and their associated OU information
-          accounts=$(aws organizations list-accounts --query "Accounts[*].{OU:ParentId,ID:Id,Name:Name}" --output text)
-
-          # Check if accounts were retrieved
-          if [[ -z "$accounts" ]]; then
-            echo "No accounts found or command failed."
+          # Retrieve a list of organizational units (OUs) under the root
+          org_units=$(aws organizations list-organizational-units-for-parent --parent-id <root-id> --query "OrganizationalUnits[*].{Id:Id,Name:Name}" --output json)
+          
+          # Check if organizational units were retrieved
+          if [[ -z "$org_units" ]]; then
+            echo "No organizational units found or command failed."
             exit 1
           fi
-
-          # Write headers to the markdown file
-          echo "# <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg' width='30' height='30'> AWS Accounts" > $markdown_file
-          echo "Here is the list of AWS accounts in the organization, grouped by Organizational Unit (OU):" >> $markdown_file
+          
+          # Write the header of the Markdown file
+          echo "# <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg' width='30' height='30'> AWS Accounts Report" > $markdown_file
+          echo "This document lists all AWS accounts grouped by Organizational Units (OUs):" >> $markdown_file
           echo "" >> $markdown_file
-
-          # Group and write accounts by Organizational Unit
-          echo "$accounts" | awk '
-          {
-            # Extract Organizational Unit (OU) name or ID
-            ouName = $1;
+          
+          # Parse OUs and retrieve accounts for each
+          echo "$org_units" | jq -c '.[]' | while read -r ou; do
+            ou_id=$(echo "$ou" | jq -r '.Id')
+            ou_name=$(echo "$ou" | jq -r '.Name')
+          
+            # Retrieve accounts for the current OU
+            accounts=$(aws organizations list-accounts-for-parent --parent-id "$ou_id" --query "Accounts[*].{ID:Id,Name:Name}" --output json)
             
-            # If a new OU is encountered, print a header
-            if (ouName != currentOU) {
-              if (currentOU != "") { print "" } # Add a blank line between OUs
-              currentOU = ouName;
-              printf "## Organizational Unit: %s\n\n", currentOU;
-              printf "| Account Name       | Account ID      |\n";
-              printf "|--------------------|-----------------|\n";
-            }
-            
-            # Print the account details
-            printf "| %-18s | %-15s |\n", $3, $2;
-          }' >> $markdown_file
-
-          # Add a date-time stamp at the bottom of the markdown file
-          echo "" >> $markdown_file
+            # Check if accounts exist for the OU
+            if [[ -n "$accounts" && "$accounts" != "[]" ]]; then
+              # Write the OU section header
+              echo "## Organizational Unit: $ou_name" >> $markdown_file
+              echo "" >> $markdown_file
+              echo "| Account Name       | Account ID      |" >> $markdown_file
+              echo "|--------------------|-----------------|" >> $markdown_file
+              
+              # Parse and write the accounts
+              echo "$accounts" | jq -c '.[]' | while read -r account; do
+                account_name=$(echo "$account" | jq -r '.Name')
+                account_id=$(echo "$account" | jq -r '.ID')
+                printf "| %-18s | %-15s |\n" "$account_name" "$account_id" >> $markdown_file
+              done
+              echo "" >> $markdown_file
+            fi
+          done
+          
+          # Add a timestamp at the bottom of the Markdown file
           echo "*Report generated on $(date)*" >> $markdown_file
+
 
 
       - name: Debug - List Files After Generation
