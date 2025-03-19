@@ -77,10 +77,12 @@ jobs:
               echo "$accounts" | jq -c '.[]' | while read -r account; do
                 account_name=$(echo "$account" | jq -r '.Name')
                 account_id=$(echo "$account" | jq -r '.ID')
-                printf "| %-18s | %-15s |\n" "$account_name" "$account_id" >> $markdown_file
 
-                      # Append to CSV
-              echo "$ou_name,$ou_id,$account_name,$account_id" >> "$csv_file"
+                # Append to CSV
+                echo "$ou_name,$ou_id,$account_name,$account_id" >> "$csv_file"
+
+                
+                printf "| %-18s | %-15s |\n" "$account_name" "$account_id" >> $markdown_file
               done
               echo "" >> $markdown_file
             fi
