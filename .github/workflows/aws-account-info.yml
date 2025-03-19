@@ -49,7 +49,7 @@ jobs:
 
           # Write to CSV
           echo "OU Name,OU ID,Account Name,Account ID" > "$csv_file"
-          echo "$org_units" | jq -r '.[] | [.Id, .Name] | @csv' >> org_units.csv
+          echo "$org_units" | jq -r '.[] | [.Id, .Name] | @csv' >> "$csv_file"
           echo "Organizational units have been written to org_units.csv"
           
           # Write the header of the Markdown file
