@@ -103,6 +103,7 @@ jobs:
       - name: Commit Changes
         run: |
           git add accounts.md
+          git add org_units.csv
           git commit -m "List of AWS Accounts"
           git push
         env:
