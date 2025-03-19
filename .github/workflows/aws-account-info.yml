@@ -27,7 +27,8 @@ jobs:
       - name: Retrieve AWS Account List in Table Format
         run: |
           markdown_file="accounts.md"
-
+          csv_file="org_units_accounts.csv"
+          
           # Retrieve the root ID of the AWS Organization
           root_id=$(aws organizations list-roots --query "Roots[0].Id" --output text)
           
@@ -47,7 +48,7 @@ jobs:
           fi
 
           # Write to CSV
-          echo "Id,Name" > org_units.csv
+          echo "OU Name,OU ID,Account Name,Account ID" > "$csv_file"
           echo "$org_units" | jq -r '.[] | [.Id, .Name] | @csv' >> org_units.csv
           echo "Organizational units have been written to org_units.csv"
           
@@ -77,6 +78,9 @@ jobs:
                 account_name=$(echo "$account" | jq -r '.Name')
                 account_id=$(echo "$account" | jq -r '.ID')
                 printf "| %-18s | %-15s |\n" "$account_name" "$account_id" >> $markdown_file
+
+                      # Append to CSV
+              echo "$ou_name,$ou_id,$account_name,$account_id" >> "$csv_file"
               done
               echo "" >> $markdown_file
             fi
