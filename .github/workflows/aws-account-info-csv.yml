@@ -1,0 +1,89 @@
+name: Update AWS Accounts in Markdown
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  
+permissions:
+  contents: 'write'
+  id-token: write
+
+jobs:
+  update-aws-accounts:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Login to AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::098789448788:role/rgonzo-aws-accounts-github-Role-RkgjO4uXfipb
+          aws-region: us-east-1  # Adjust region as needed
+
+      - name: Retrieve AWS Account List in Table Format
+        run: |
+          #!/bin/bash
+          input_file="accounts.md"
+          ###Added csv file
+          csv_file="org_units_accounts.csv"
+          
+          # Check if the file exists
+          if [[ ! -f "$input_file" ]]; then
+            echo "File not found!"
+            exit 1
+          fi
+          
+          # Read the file line by line
+          while IFS= read -r line
+          do
+            ou_id=$(echo "$line" | cut -d':' -f3)
+            ou_name=$(echo "$line" | cut -d':' -f1)
+            accounts=$(aws organizations list-accounts-for-parent --parent-id ${ou_id} --output text --query 'Accounts[*].[Id,Name]')
+            if [[ -z "$accounts" ]]; then
+              echo "No accounts found in OU \"${ou_name}\""
+              continue
+            fi
+            
+            ###Write to CSV File
+            # Parse and write the accounts
+            echo "$accounts" | jq -c '.[]' | while read -r account; do
+              account_name=$(echo "$account" | jq -r '.Name')
+              account_id=$(echo "$account" | jq -r '.ID')
+            # Append to CSV
+            echo "$ou_name,$ou_id,$account_name,$account_id" >> "$csv_file"
+          
+            ###Write to Markdown File
+            echo ""
+            echo "Here is the list of AWS accounts in the OU \"${ou_name}\""
+            echo "--------------------------------------------------------------------"
+            echo "| Account Name                                   | Account ID      |"
+            echo "|------------------------------------------------|-----------------|"
+            echo "$accounts" | awk '{printf "| %-46s | %-15s |\n", $2, $1}'
+            echo "--------------------------------------------------------------------"
+            echo ""
+              
+          done < "$input_file"
+
+          
+      - name: Debug - List Files After Generation
+        run: |
+          echo "Listing Root folder"
+          ls -la          
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+  
+      - name: Commit Changes
+        run: |
+          git add accounts.md
+          git add org_units_accounts.csv
+          git commit -m "List of AWS Accounts"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
