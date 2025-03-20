@@ -47,7 +47,7 @@ jobs:
             ou_name=$(echo "$line" | cut -d':' -f1)
 
             # Retrieve accounts under the current OU
-            accounts=$(aws organizations list-accounts-for-parent --parent-id "$ou_id" --output json)
+            accounts=$(aws organizations list-accounts-for-parent --parent-id "$root_id" --output json)
             
             if [[ -z "$accounts" || "$accounts" == "[]" ]]; then
               echo "No accounts found in OU \"$ou_name\""
