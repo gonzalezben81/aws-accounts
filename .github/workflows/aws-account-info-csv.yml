@@ -1,4 +1,4 @@
-name: Update AWS Accounts with CSV in Markdown
+name: CSV
 
 on:
   push:
