@@ -42,7 +42,7 @@ jobs:
           do
             ou_id=$(echo "$line" | cut -d':' -f3)
             ou_name=$(echo "$line" | cut -d':' -f1)
-            accounts=$(aws organizations list-accounts-for-parent --parent-id ${ou_id} --output text --query 'Accounts[*].[Id,Name]')
+            accounts=$(aws organizations list-accounts-for-parent --parent-id "$root_id" --output text --query 'Accounts[*].[Id,Name]')
             if [[ -z "$accounts" ]]; then
               echo "No accounts found in OU \"${o in u_name}\""
               continue
