@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
   
 permissions:
-  contents: 'write'
+  contents: write
   id-token: write
 
 jobs:
@@ -28,7 +28,6 @@ jobs:
         run: |
           #!/bin/bash
           input_file="accounts.md"
-          ###Added csv file
           csv_file="org_with.csv"
           
           echo "OU Name,OU ID,Account Name,Account ID" > "$csv_file"
@@ -36,61 +35,58 @@ jobs:
           # Retrieve the root ID of the AWS Organization
           root_id=$(aws organizations list-roots --query "Roots[0].Id" --output text)
           
-          # Check if the file exists
+          # Check if the input file exists
           if [[ ! -f "$input_file" ]]; then
-            echo "File not found!"
+            echo "Error: File '$input_file' not found!"
             exit 1
           fi
           
-          # Read the file line by line
-          while IFS= read -r line
-          do
+          # Read Organizational Units (OU) from the input file
+          while IFS= read -r line; do
             ou_id=$(echo "$line" | cut -d':' -f3)
             ou_name=$(echo "$line" | cut -d':' -f1)
-            accounts=$(aws organizations list-accounts-for-parent --parent-id "$root_id" --output text --query 'Accounts[*].[Id,Name]')
-            if [[ -z "$accounts" ]]; then
-              echo "No accounts found in OU \"${ou_name}\""
+
+            # Retrieve accounts under the current OU
+            accounts=$(aws organizations list-accounts-for-parent --parent-id "$ou_id" --output json)
+            
+            if [[ -z "$accounts" || "$accounts" == "[]" ]]; then
+              echo "No accounts found in OU \"$ou_name\""
               continue
             fi
-            
-          
-            ###Write to Markdown File
+
+            # Output in Markdown format
             echo ""
             echo "Here is the list of AWS accounts in the OU \"${ou_name}\""
             echo "--------------------------------------------------------------------"
             echo "| Account Name                                   | Account ID      |"
             echo "|------------------------------------------------|-----------------|"
-            echo "$accounts" | awk '{printf "| %-46s | %-15s |\n", $2, $1}'
+            echo "$accounts" | jq -r '.[] | "| \(.Name) | \(.Id) |"'
             echo "--------------------------------------------------------------------"
             echo ""
-              
-          done < "$input_file"
-          
-          ###Write to CSV File
-          # Parse and write the accounts
-          echo "$accounts" | jq -c '.[]' | while read -r account; do
-              account_name=$(echo "$account" | jq -r '.Name')
-              account_id=$(echo "$account" | jq -r '.ID')
-            # Append to CSV
-            echo "$ou_name,$ou_id,$account_name,$account_id" >> "$csv_file"
-          done          
 
-          
+            # Write to CSV File
+            echo "$accounts" | jq -c '.[]' | while read -r account; do
+                account_name=$(echo "$account" | jq -r '.Name')
+                account_id=$(echo "$account" | jq -r '.Id')
+                echo "$ou_name,$ou_id,$account_name,$account_id" >> "$csv_file"
+            done
+
+          done < "$input_file"
+
       - name: Debug - List Files After Generation
         run: |
-          echo "Listing Root folder"
-          ls -la          
+          echo "Listing generated files..."
+          ls -la 
 
       - name: Configure Git
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
   
-      - name: Commit Changes
+      - name: Commit and Push Changes
         run: |
-          #git add accounts.md
-          git add org_with.csv
-          git commit -m "List of AWS Accounts"
+          git add .
+          git commit -m "Updated AWS accounts list"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
