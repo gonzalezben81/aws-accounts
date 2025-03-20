@@ -29,7 +29,9 @@ jobs:
           #!/bin/bash
           input_file="accounts.md"
           ###Added csv file
-          csv_file="org_units_accounts_with.csv"
+          csv_file="org_with.csv"
+          
+          echo "OU Name,OU ID,Account Name,Account ID" > "$csv_file"
           
           # Retrieve the root ID of the AWS Organization
           root_id=$(aws organizations list-roots --query "Roots[0].Id" --output text)
@@ -87,7 +89,7 @@ jobs:
       - name: Commit Changes
         run: |
           git add accounts.md
-          git add org_units_accounts_with.csv
+          git add org_with.csv
           git commit -m "List of AWS Accounts"
           git push
         env:
