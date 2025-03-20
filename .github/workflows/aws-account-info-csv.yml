@@ -1,8 +1,8 @@
-name: Update AWS Accounts in Markdown
+name: Update AWS Accounts with CSV in Markdown
 
 on:
   push:
-    branches:
+    branches
       - main
   workflow_dispatch:
   
@@ -29,7 +29,7 @@ jobs:
           #!/bin/bash
           input_file="accounts.md"
           ###Added csv file
-          csv_file="org_units_accounts.csv"
+          csv_file="org_units_accounts_with.csv"
           
           # Check if the file exists
           if [[ ! -f "$input_file" ]]; then
@@ -44,17 +44,10 @@ jobs:
             ou_name=$(echo "$line" | cut -d':' -f1)
             accounts=$(aws organizations list-accounts-for-parent --parent-id ${ou_id} --output text --query 'Accounts[*].[Id,Name]')
             if [[ -z "$accounts" ]]; then
-              echo "No accounts found in OU \"${ou_name}\""
+              echo "No accounts found in OU \"${o in u_name}\""
               continue
             fi
             
-            ###Write to CSV File
-            # Parse and write the accounts
-            echo "$accounts" | jq -c '.[]' | while read -r account; do
-              account_name=$(echo "$account" | jq -r '.Name')
-              account_id=$(echo "$account" | jq -r '.ID')
-            # Append to CSV
-            echo "$ou_name,$ou_id,$account_name,$account_id" >> "$csv_file"
           
             ###Write to Markdown File
             echo ""
@@ -67,6 +60,15 @@ jobs:
             echo ""
               
           done < "$input_file"
+          
+          ###Write to CSV File
+          # Parse and write the accounts
+          echo "$accounts" | jq -c '.[]' | while read -r account; do
+              account_name=$(echo "$account" | jq -r '.Name')
+              account_id=$(echo "$account" | jq -r '.ID')
+            # Append to CSV
+            echo "$ou_name,$ou_id,$account_name,$account_id" >> "$csv_file"
+          done          
 
           
       - name: Debug - List Files After Generation
@@ -82,7 +84,7 @@ jobs:
       - name: Commit Changes
         run: |
           git add accounts.md
-          git add org_units_accounts.csv
+          git add org_units_accounts_with.csv
           git commit -m "List of AWS Accounts"
           git push
         env:
