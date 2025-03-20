@@ -31,6 +31,9 @@ jobs:
           ###Added csv file
           csv_file="org_units_accounts_with.csv"
           
+          # Retrieve the root ID of the AWS Organization
+          root_id=$(aws organizations list-roots --query "Roots[0].Id" --output text)
+          
           # Check if the file exists
           if [[ ! -f "$input_file" ]]; then
             echo "File not found!"
