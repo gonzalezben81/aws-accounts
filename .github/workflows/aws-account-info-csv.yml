@@ -1,4 +1,4 @@
-name: Update AWS Accounts in Markdown
+name: Update AWS Accounts in Markdown with CSV
 
 on:
   push:
@@ -88,7 +88,7 @@ jobs:
   
       - name: Commit Changes
         run: |
-          git add accounts.md
+          #git add accounts.md
           git add org_with.csv
           git commit -m "List of AWS Accounts"
           git push
