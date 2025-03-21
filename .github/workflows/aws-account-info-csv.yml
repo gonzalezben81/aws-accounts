@@ -72,7 +72,7 @@ jobs:
             echo "--------------------------------------------------------------------"
             echo ""
 
-          done < "$input_file"
+          done < "accounts.md"
 
       - name: Debug - List Files After Generation
         run: |
