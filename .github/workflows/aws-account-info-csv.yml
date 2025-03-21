@@ -54,22 +54,23 @@ jobs:
               continue
             fi
 
-            # Output in Markdown format
+            ###Write to CSV File
+            # Parse and write the accounts
+            echo "$accounts" | jq -c '.[]' | while read -r account; do
+              account_name=$(echo "$account" | jq -r '.Name')
+              account_id=$(echo "$account" | jq -r '.ID')
+            # Append to CSV
+            echo "$ou_name,$ou_id,$account_name,$account_id" >> "$csv_file"
+          
+            ###Write to Markdown File
             echo ""
             echo "Here is the list of AWS accounts in the OU \"${ou_name}\""
             echo "--------------------------------------------------------------------"
             echo "| Account Name                                   | Account ID      |"
             echo "|------------------------------------------------|-----------------|"
-            echo "$accounts" | jq -r '.[] | "| \(.Name) | \(.Id) |"'
+            echo "$accounts" | awk '{printf "| %-46s | %-15s |\n", $2, $1}'
             echo "--------------------------------------------------------------------"
             echo ""
-
-            # Write to CSV File
-            echo "$accounts" | jq -c '.[]' | while read -r account; do
-                account_name=$(echo "$account" | jq -r '.Name')
-                account_id=$(echo "$account" | jq -r '.Id')
-                echo "$ou_name,$ou_id,$account_name,$account_id" >> "$csv_file"
-            done
 
           done < "$input_file"
 
