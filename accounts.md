@@ -20,4 +20,4 @@ This document lists all AWS accounts grouped by Organizational Units (OUs):
 | slu-data-lake      | 841162665398    |
 | slu-data-science   | 442426862308    |
 
-*Report generated on Fri Mar 21 06:40:04 UTC 2025*
+*Report generated on Fri Mar 21 06:44:11 UTC 2025*
