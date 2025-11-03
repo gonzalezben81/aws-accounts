@@ -20,4 +20,4 @@ This document lists all AWS accounts grouped by Organizational Units (OUs):
 | gonzodatascience   | 692859932239    |
 | gonzodatalake      | 985539799804    |
 
-*Report generated on Mon Nov  3 22:38:48 UTC 2025*
+*Report generated on Mon Nov  3 22:40:27 UTC 2025*
