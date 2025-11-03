@@ -1,9 +1,23 @@
----
-title: Home
-layout: home
-nav_order: 1
----
+# <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg' width='30' height='30'> AWS Accounts Report
+This document lists all AWS accounts grouped by Organizational Units (OUs):
 
-## AWS Cloud Account Info
+## Organizational Unit: SLU
 
-<script> const toggleDarkMode = document.querySelector('.js-toggle-dark-mode'); jtd.addEvent(toggleDarkMode, 'click', function(){ if (jtd.getTheme() === 'dark') { jtd.setTheme('light'); toggleDarkMode.textContent = 'Preview dark color scheme'; } else { jtd.setTheme('dark'); toggleDarkMode.textContent = 'Return to the light side'; } }); </script>
+| Account Name       | Account ID      |
+|--------------------|-----------------|
+| slu-data-science   | 442426862308    |
+| slu-programming    | 509399635729    |
+| slu-applied-analytics | 761018881748    |
+| slu-data-lake      | 841162665398    |
+
+## Organizational Unit: rgonzo
+
+| Account Name       | Account ID      |
+|--------------------|-----------------|
+| Ben Gonzalez       | 098789448788    |
+| gonzoprogramming   | 529088281001    |
+| gonzoanalytics     | 637423577632    |
+| gonzodatascience   | 692859932239    |
+| gonzodatalake      | 985539799804    |
+
+*Report generated on Mon Nov  3 22:53:28 UTC 2025*
