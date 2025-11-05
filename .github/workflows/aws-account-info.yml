@@ -68,10 +68,10 @@ jobs:
             # Check if accounts exist for the OU
             if [[ -n "$accounts" && "$accounts" != "[]" ]]; then
               # Write the OU section header
-              echo "## Organizational Unit: $ou_name" >> $markdown_file
+              echo "## Organizational Unit: $ou_name" "$ou_id" >> $markdown_file
               echo "" >> $markdown_file
-              echo "| Account Name       | Account ID      |" >> $markdown_file
-              echo "|--------------------|-----------------|" >> $markdown_file
+              echo "| Account Name       | Account ID      | Org Unit ID |" >> $markdown_file
+              echo "|--------------------|-----------------|-------------|" >> $markdown_file
               
               # Parse and write the accounts
               echo "$accounts" | jq -c '.[]' | while read -r account; do
@@ -82,7 +82,7 @@ jobs:
                 echo "$ou_name,$ou_id,$account_name,$account_id" >> "$csv_file"
 
                 
-                printf "| %-18s | %-15s |\n" "$account_name" "$account_id" "ou_id" >> $markdown_file
+                printf "| %-18s | %-15s |\n" "$account_name" "$account_id" "$ou_id" >> $markdown_file
               done
               echo "" >> $markdown_file
             fi
