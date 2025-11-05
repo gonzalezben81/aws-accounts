@@ -68,7 +68,8 @@ jobs:
             # Check if accounts exist for the OU
             if [[ -n "$accounts" && "$accounts" != "[]" ]]; then
               # Write the OU section header
-              echo "## Org Unit Name: $ou_name"  Org Unit ID: "$ou_id" >> $markdown_file
+              echo "## Org Unit Name: $ou_name" >> $markdown_file
+              echo "### Org Unit ID: "$ou_id" >> $markdown_file
               echo "" >> $markdown_file
               echo "| Account Name       | Account ID      | Org Unit ID |" >> $markdown_file
               echo "|--------------------|-----------------|-------------|" >> $markdown_file
