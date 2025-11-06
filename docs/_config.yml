@@ -1,8 +1,6 @@
 title: AWS Cloud Templates
 description: AWS Cloud Templates
-remote_theme: just-the-docs/just-the-docs
-plugins:
-  - jekyll-remote-theme
+theme: just-the-docs
 
 
 url: https://gonzalezben81.github.io/aws-accounts/
