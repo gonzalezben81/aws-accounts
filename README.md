@@ -22,4 +22,4 @@ This document lists all AWS accounts grouped by Organizational Units (OUs):
 | gonzodatascience   | 692859932239    | ou-7z1h-vaum8fcy |
 | gonzodatalake      | 985539799804    | ou-7z1h-vaum8fcy |
 
-*Report generated on Thu Nov  6 00:18:55 UTC 2025*
+*Report generated on Thu Nov  6 00:21:06 UTC 2025*
