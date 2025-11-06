@@ -4,7 +4,7 @@
 # documentation.
 
 # Sample workflow for building and deploying a Jekyll site to GitHub Pages
-name: Deploy aws cloud templates docs
+name: Deploy AWS cloud templates docs
 
 on:
   push:
