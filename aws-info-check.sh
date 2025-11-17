@@ -8,7 +8,7 @@ if [[ ! -f "$input_file" ]]; then
 fi
 
 # Read the file line by line
-while IFS= read -r line
+while IFS= read -r line; do
           
 markdown_file="accounts.md"
 csv_file="org_units_accounts.csv"
