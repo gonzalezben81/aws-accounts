@@ -28,9 +28,6 @@ jobs:
         run: |
           markdown_file="accounts.md"
           csv_file="org_units_accounts.csv"
-          
-          # Retrieve the root ID of the AWS Organization
-          root_id=$(aws organizations list-roots --query "Roots[0].Id" --output text)
           chmod +x ./aws-info-check.sh
           ./aws-info-check.sh > accounts.md
           
