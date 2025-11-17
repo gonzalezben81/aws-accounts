@@ -1,4 +1,4 @@
-# <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg' width='30' height='30'> AWS Accounts Report
+# <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg' width='30' height='30'> AWS Org Unit: Account Information
 This document lists all AWS accounts grouped by Organizational Units (OUs):
 
 ## Org Unit Name: SLU
@@ -22,4 +22,4 @@ This document lists all AWS accounts grouped by Organizational Units (OUs):
 | gonzodatascience   | 692859932239    | ou-7z1h-vaum8fcy |
 | gonzodatalake      | 985539799804    | ou-7z1h-vaum8fcy |
 
-*Report generated on Thu Nov  6 00:24:00 UTC 2025*
+*Report generated on Fri Nov  7 22:41:46 UTC 2025*
