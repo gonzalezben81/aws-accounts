@@ -8,7 +8,8 @@ if [[ ! -f "$input_file" ]]; then
 fi
 
 # Read the file line by line
-while IFS= read -r line; do
+while IFS= read -r line
+do
           
 markdown_file="accounts.md"
 csv_file="org_units_accounts.csv"
@@ -34,7 +35,7 @@ echo "" >> $markdown_file
           
 
   # Retrieve accounts for the current OU
-  accounts=$(aws organizations list-accounts-for-parent --parent-id "$ou_id" --query "Accounts[*].{ID:Id,Name:Name}" --output json)
+  accounts=$(aws organizations list-accounts-for-parent --parent-id ${ou_id} --query "Accounts[*].{ID:Id,Name:Name}" --output json)
   
   # Check if accounts exist for the OU
   if [[ -n "$accounts" && "$accounts" != "[]" ]]; then
