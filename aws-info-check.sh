@@ -36,9 +36,6 @@ do
   
   # Check if accounts exist for the OU
   if [[ -n "$accounts" && "$accounts" != "[]" ]]; then
-      echo "No accounts found in OU \"${ou_name}\""
-      continue
-  fi
     # Write the OU section header
     echo "## Org Unit Name: $ou_name" >> $markdown_file
     echo "### Org Unit ID: $ou_id" >> $markdown_file
@@ -57,7 +54,10 @@ do
         
     printf "| %-18s | %-15s | %-15s |\n" "$account_name" "$account_id" "$ou_id" >> $markdown_file
     done
-
-        
+    echo "" >> $markdown_file
+  fi
+          
+# Add a timestamp at the bottom of the Markdown file
+echo "*Report generated on $(date)*" >> $markdown_file
 
 done < "$input_file"
