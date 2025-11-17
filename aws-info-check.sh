@@ -13,17 +13,18 @@ while IFS= read -r line; do
 markdown_file="accounts.md"
 csv_file="org_units_accounts.csv"
 
-# Retrieve a list of organizational units (OUs) under the root
-org_units=$(aws organizations list-organizational-units-for-parent --parent-id ${ou_id} --query "OrganizationalUnits[*].{Id:Id,Name:Name}" --output json)
+ou_id=$(echo "$line" | cut -d':' -f3)
+ou_name=$(echo "$line" | cut -d':' -f1)
+
 
 # Check if organizational units were retrieved
-if [[ -z "$org_units" ]]; then
+if [[ -z "$ou_id" ]]; then
   echo "No organizational units found or command failed."
   exit 1
 fi
 # Write to CSV
 echo "OU Name,OU ID,Account Name,Account ID" > "$csv_file"
-#echo "$org_units" | jq -r '.[] | [.Id, .Name] | @csv' >> "$csv_file"
+#echo "$ou_id" | jq -r '.[] | [.Id, .Name] | @csv' >> "$csv_file"
 echo "Organizational units have been written to org_units.csv"
 
 # Write the header of the Markdown file
@@ -31,10 +32,6 @@ echo "# <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web
 echo "This document lists all AWS accounts grouped by Organizational Units (OUs):" >> $markdown_file
 echo "" >> $markdown_file
           
-# Parse OUs and retrieve accounts for each
-echo "$org_units" | jq -c '.[]' | while read -r ou; do
-  ou_id=$(echo "$ou" | jq -r '.Id')
-  ou_name=$(echo "$ou" | jq -r '.Name')
 
   # Retrieve accounts for the current OU
   accounts=$(aws organizations list-accounts-for-parent --parent-id "$ou_id" --query "Accounts[*].{ID:Id,Name:Name}" --output json)
@@ -61,7 +58,6 @@ echo "$org_units" | jq -c '.[]' | while read -r ou; do
     done
     echo "" >> $markdown_file
   fi
-done
           
 # Add a timestamp at the bottom of the Markdown file
 echo "*Report generated on $(date)*" >> $markdown_file
