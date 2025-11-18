@@ -12,7 +12,7 @@ while IFS= read -r line
 do
   ou_id=$(echo "$line" | cut -d':' -f3)
   ou_name=$(echo "$line" | cut -d':' -f1)
-  accounts=$(aws organizations list-accounts-for-parent --parent-id ${ou_id} --output text --query 'Accounts[*].[Id,Name]' --profile AdministratorAccess-098789448788)
+  accounts=$(aws organizations list-accounts-for-parent --parent-id ${ou_id} --output text --query 'Accounts[*].[Id,Name]' )
   if [[ -z "$accounts" ]]; then
     echo "No accounts found in OU \"${ou_name}\""
     continue
