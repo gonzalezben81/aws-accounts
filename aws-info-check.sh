@@ -18,7 +18,8 @@ cat > "$md_file" <<EOF
 EOF
 
 # Read the file line by line
-while IFS= read -r line || [[ -n "$line" ]]; do
+# while IFS= read -r line || [[ -n "$line" ]]; do
+while IFS= read -r line ; do
   ou_id=$(echo "$line" | cut -d':' -f3)
   ou_name=$(echo "$line" | cut -d':' -f1)
 
