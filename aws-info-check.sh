@@ -1,5 +1,5 @@
 #!/bin/bash
-input_file="ou_prod.conf"
+input_file="ou_info.conf"
 
 # Check if the file exists
 if [[ ! -f "$input_file" ]]; then
