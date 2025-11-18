@@ -10,25 +10,28 @@ fi
 # Read the file line by line
 while IFS= read -r line
 do
+          
+markdown_file="accounts.md"
+csv_file="org_units_accounts.csv"
 
-  ou_id=$(echo "$line" | cut -d':' -f3)
-  ou_name=$(echo "$line" | cut -d':' -f1)
+ou_id=$(echo "$line" | cut -d':' -f3)
+ou_name=$(echo "$line" | cut -d':' -f1)
 
 
-  # Check if organizational units were retrieved
-  if [[ -z "$ou_id" ]]; then
-    echo "No organizational units found or command failed."
-    exit 1
-  fi
-  # Write to CSV
-  # echo "OU Name,OU ID,Account Name,Account ID" > "$csv_file"
-  # #echo "$ou_id" | jq -r '.[] | [.Id, .Name] | @csv' >> "$csv_file"
-  # echo "Organizational units have been written to org_units.csv"
-  
-  # Write the header of the Markdown file
-  echo "# <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg' width='30' height='30'> AWS Org Unit: Account Information" > $markdown_file
-  echo "This document lists all AWS accounts grouped by Organizational Units (OUs) Test:" >> $markdown_file
-  echo "" >> $markdown_file
+# Check if organizational units were retrieved
+if [[ -z "$ou_id" ]]; then
+  echo "No organizational units found or command failed."
+  exit 1
+fi
+# Write to CSV
+echo "OU Name,OU ID,Account Name,Account ID" > "$csv_file"
+#echo "$ou_id" | jq -r '.[] | [.Id, .Name] | @csv' >> "$csv_file"
+echo "Organizational units have been written to org_units.csv"
+
+# Write the header of the Markdown file
+echo "# <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg' width='30' height='30'> AWS Org Unit: Account Information" > $markdown_file
+echo "This document lists all AWS accounts grouped by Organizational Units (OUs):" >> $markdown_file
+echo "" >> $markdown_file
           
 
   # Retrieve accounts for the current OU
@@ -49,7 +52,7 @@ do
       account_id=$(echo "$account" | jq -r '.ID')
 
     # Append to CSV
-    # echo "$ou_name,$ou_id,$account_name,$account_id" >> "$csv_file"
+    echo "$ou_name,$ou_id,$account_name,$account_id" >> "$csv_file"
 
         
     printf "| %-18s | %-15s | %-15s |\n" "$account_name" "$account_id" "$ou_id" >> $markdown_file
