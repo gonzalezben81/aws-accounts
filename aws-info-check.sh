@@ -31,6 +31,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     continue
   fi
 
+
   # --- Print to console ---
   echo "Org $ou_name"
   echo ""
