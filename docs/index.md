@@ -1,8 +1,8 @@
 
 Here is the list of AWS accounts in the OU "GonzoMainAccounts"
 --------------------------------------------------------------------
-| Account Name                                   | Account ID      |
-|------------------------------------------------|-----------------|
+| Account Name                                   | Account ID      | OU Name|
+|------------------------------------------------|-----------------|--------|
 | gonzodatalake                                  | 985539799804    |
 | gonzodatascience                               | 692859932239    |
 | gonzoanalytics                                 | 637423577632    |
