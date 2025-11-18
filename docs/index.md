@@ -6,8 +6,3 @@
 | Ben | 098789448788 | GonzoMainAccounts | ou-7z1h-vaum8fcy |
 | gonzoprogramming | 529088281001 | GonzoMainAccounts | ou-7z1h-vaum8fcy |
 
-| slu-data-science | 442426862308 | SLUMainAccounts | ou-7z1h-26gd2tq2 |
-| slu-data-lake | 841162665398 | SLUMainAccounts | ou-7z1h-26gd2tq2 |
-| slu-applied-analytics | 761018881748 | SLUMainAccounts | ou-7z1h-26gd2tq2 |
-| slu-programming | 509399635729 | SLUMainAccounts | ou-7z1h-26gd2tq2 |
-
