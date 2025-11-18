@@ -12,8 +12,13 @@ fi
 # Initialize CSV and Markdown files
 echo "Account Name,Account ID,OU Name,OU ID" > "$csv_file"
 
+cat > "$md_file" <<EOF
+# AWS Accounts by OU
+
+EOF
+
 # Read the file line by line
-while IFS= read -r line ; do
+while IFS= read -r line || [[ -n "$line" ]]; do
   ou_id=$(echo "$line" | cut -d':' -f3)
   ou_name=$(echo "$line" | cut -d':' -f1)
 
