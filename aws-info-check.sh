@@ -32,8 +32,8 @@ while IFS= read -r line || [[ -n "$line" ]]; do
   
   # Write the header of the Markdown file
   echo "# <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg' width='30' height='30'> AWS Org Unit: Account Information" > $markdown_file
-  echo "This document lists all AWS accounts grouped by Organizational Units (OUs):" >> $markdown_file
-  echo "" >> $markdown_file  
+  echo "This document lists all AWS accounts grouped by Organizational Units (OUs):" >> $md_file
+  echo "" >> $md_file  
 
   # --- Print to console ---
   echo "Org $ou_name"
