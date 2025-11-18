@@ -1,1 +1,13 @@
-No accounts found in OU "GonzoMainAccounts"
+Org GonzoMainAccounts
+
+Here is the list of AWS accounts in the OU ou-7z1h-vaum8fcy "GonzoMainAccounts"
+-----------------------------------------------------------------------------------
+| Account Name                                   | Account ID      | OU Name|OU ID|
+|------------------------------------------------|-----------------|--------|-----|
+| gonzodatalake                                  | 985539799804    | GonzoMainAccounts |ou-7z1h-vaum8fcy|
+| gonzodatascience                               | 692859932239    | GonzoMainAccounts |ou-7z1h-vaum8fcy|
+| gonzoanalytics                                 | 637423577632    | GonzoMainAccounts |ou-7z1h-vaum8fcy|
+| Ben Gonzalez                                   | 098789448788    | GonzoMainAccounts |ou-7z1h-vaum8fcy|
+| gonzoprogramming                               | 529088281001    | GonzoMainAccounts |ou-7z1h-vaum8fcy|
+----------------------------------------------------------------------------------------------------
+
