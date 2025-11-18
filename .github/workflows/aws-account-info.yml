@@ -27,7 +27,7 @@ jobs:
       - name: Retrieve AWS Account List in Table Format
         run: |
           chmod +x ./aws-info-check.sh
-          ./aws-info-check.sh > accounts.md
+          ./aws-info-check.sh
           
 
       - name: Debug - List Files After Generation
