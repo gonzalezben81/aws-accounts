@@ -26,8 +26,6 @@ jobs:
 
       - name: Retrieve AWS Account List in Table Format
         run: |
-          markdown_file="accounts.md"
-          csv_file="org_units_accounts.csv"
           chmod +x ./aws-info-check.sh
           ./aws-info-check.sh > accounts.md
           
