@@ -23,49 +23,36 @@ EOF
 
 # Read each OU line
 while IFS= read -r line; do
+    ou_id=$(echo "$line" | cut -d':' -f3)
+    ou_name=$(echo "$line" | cut -d':' -f1)
 
-  ou_id=$(echo "$line" | cut -d':' -f3)
-  ou_name=$(echo "$line" | cut -d':' -f1)
+    [[ -z "$ou_id" ]] && continue
 
-  # Skip blank or bad lines, but DO NOT EXIT
-  if [[ -z "$ou_id" ]]; then
-    echo "Skipping bad input line: $line"
-    continue
-  fi
+    accounts=$(aws organizations list-accounts-for-parent \
+               --parent-id "$ou_id" \
+               --query "Accounts[*].{ID:Id,Name:Name}" \
+               --output json)
 
-  # Retrieve accounts
-  accounts=$(aws organizations list-accounts-for-parent --parent-id "$ou_id" \
-              --query "Accounts[*].{ID:Id,Name:Name}" --output json)
+    [[ "$accounts" == "[]" ]] && continue
 
-  # If no accounts, skip but do NOT exit the script
-  if [[ "$accounts" == "[]" ]]; then
-    echo "No accounts found for $ou_name ($ou_id)"
-    continue
-  fi
+    {
+      echo "## Org Unit Name: $ou_name"
+      echo "### Org Unit ID: $ou_id"
+      echo ""
+      echo "| Account Name | Account ID | Org Unit ID |"
+      echo "|--------------|------------|-------------|"
+    } >> "$markdown_file"
 
-  # Markdown section for this OU
-  {
-    echo "## Org Unit Name: $ou_name"
-    echo "### Org Unit ID: $ou_id"
-    echo ""
-    echo "| Account Name | Account ID | Org Unit ID |"
-    echo "|--------------|------------|-------------|"
-  } >> "$markdown_file"
+    # IMPORTANT FIX HERE
+    while read -r account; do
+        account_name=$(echo "$account" | jq -r '.Name')
+        account_id=$(echo "$account" | jq -r '.ID')
+        echo "$ou_name,$ou_id,$account_name,$account_id" >> "$csv_file"
 
-  # Loop through accounts
-  echo "$accounts" | jq -c '.[]' | while read -r account; do
-    account_name=$(echo "$account" | jq -r '.Name')
-    account_id=$(echo "$account" | jq -r '.ID')
+        printf "| %-12s | %-10s | %-11s |\n" \
+            "$account_name" "$account_id" "$ou_id" >> "$markdown_file"
+    done < <(echo "$accounts" | jq -c '.[]')
 
-    echo "$ou_name,$ou_id,$account_name,$account_id" >> "$csv_file"
-
-    printf "| %-12s | %-10s | %-11s |\n" \
-      "$account_name" "$account_id" "$ou_id" >> "$markdown_file"
-  done
-
-  echo "" >> "$markdown_file"
+    echo "" >> "$markdown_file"
 
 done < "$input_file"
-
-# Add timestamp ONCE
-echo "*Report generated on $(date)*" >> "$markdown_file"
