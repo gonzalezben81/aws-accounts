@@ -45,7 +45,6 @@ jobs:
           mv accounts.md docs/index.md
           git add docs/index.md 
           git add org_units_accounts.csv
-          git rm accounts.md
           git commit -m "List of AWS Accounts"
           git push
         env:
