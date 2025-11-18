@@ -1,6 +1,6 @@
 #!/bin/bash
 input_file="ou_info.conf"
-csv_file="org_unit_accounts.csv"
+csv_file="org_units_accounts.csv"
 md_file="accounts.md"
 
 # Check if the file exists
