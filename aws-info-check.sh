@@ -12,11 +12,12 @@ fi
 # Initialize CSV and Markdown files
 echo "Account Name,Account ID,OU Name,OU ID" > "$csv_file"
 
-# cat > "$md_file" <<EOF
-# # AWS Accounts by OU
-# 
-# EOF
+cat > "$md_file" <<EOF
+# <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg' width='30' height='30'> AWS Org Unit: Account Information
 
+This document lists all AWS accounts grouped by Organizational Units (OUs):
+
+EOF
 
 # Read the file line by line
 while IFS= read -r line || [[ -n "$line" ]]; do
@@ -29,11 +30,6 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     echo "No accounts found in OU \"$ou_name\""
     continue
   fi
-  
-  # Write the header of the Markdown file
-  echo "# <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg' width='30' height='30'> AWS Org Unit: Account Information" > $markdown_file
-  echo "This document lists all AWS accounts grouped by Organizational Units (OUs):" >> $md_file
-  echo "" >> $md_file  
 
   # --- Print to console ---
   echo "Org $ou_name"
@@ -42,6 +38,13 @@ while IFS= read -r line || [[ -n "$line" ]]; do
   echo "-----------------------------------------------------------------------------------"
   echo "| Account Name                                   | Account ID      | OU Name|OU ID|"
   echo "|------------------------------------------------|-----------------|--------|-----|"
+
+  # --- Append OU section to Markdown ---
+  echo "## Org Unit: $ou_name" >> "$md_file"
+  echo "OU ID: $ou_id" >> "$md_file"
+  echo "" >> "$md_file"
+  echo "| Account Name | Account ID | OU Name | OU ID |" >> "$md_file"
+  echo "|-------------|------------|---------|-------|" >> "$md_file"
 
   # --- Process each account ---
   while read -r account_line; do
